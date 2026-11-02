@@ -1,0 +1,90 @@
+{
+  "testedAt": "2026-11-02T04:17:16.373Z",
+  "url": "https://24521450.github.io/MSIS207.R11.CTTT.Week3.Hw3/",
+  "productionBuild": true,
+  "browser": "Playwright Chromium",
+  "checks": [
+    {
+      "check": "production page title and bundled app load",
+      "passed": true
+    },
+    {
+      "check": "10,000-event feed renders only viewport plus overscan rows",
+      "passed": true
+    },
+    {
+      "check": "warmup countdown starts near fifteen seconds",
+      "passed": true
+    },
+    {
+      "check": "mobile layout fits a 390 px viewport without horizontal overflow",
+      "passed": true
+    },
+    {
+      "check": "success claim reconciles service stock",
+      "passed": true
+    },
+    {
+      "check": "success leaves two of three mock units",
+      "passed": true
+    },
+    {
+      "check": "409 scenario reconciles the service snapshot",
+      "passed": true
+    },
+    {
+      "check": "409 does not restore stock blindly",
+      "passed": true
+    },
+    {
+      "check": "temporary error rolls back optimistic stock",
+      "passed": true
+    },
+    {
+      "check": "temporary failure preserves mock stock for retry",
+      "passed": true
+    },
+    {
+      "check": "retry succeeds with a fresh claim ID",
+      "passed": true
+    },
+    {
+      "check": "reset restores the new demo session",
+      "passed": true
+    },
+    {
+      "check": "countdown reaches the AIRDROP_LIVE boundary without refresh",
+      "passed": true
+    },
+    {
+      "check": "leaderboard search filters teams",
+      "passed": true
+    },
+    {
+      "check": "leaderboard sort and direction retain all seeded teams",
+      "passed": true
+    },
+    {
+      "check": "filtered mid-list window stays bounded",
+      "passed": true
+    },
+    {
+      "check": "filtered end-list window stays bounded",
+      "passed": true
+    },
+    {
+      "check": "kill-feed search exposes an empty state",
+      "passed": true
+    },
+    {
+      "check": "no page or console errors during browser scenarios",
+      "passed": true
+    }
+  ],
+  "consoleErrors": [],
+  "screenshots": [
+    "deployed-site-desktop.png",
+    "deployed-site-mobile.png",
+    "deployed-site-verified.png"
+  ]
+}

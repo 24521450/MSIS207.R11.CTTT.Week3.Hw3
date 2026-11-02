@@ -60,6 +60,14 @@ npm run verify:browser
 
 Suite Vitest dùng fake timers để kiểm tra deadline, clock jump, offset, visibility resync, đổi target, cleanup, phase/claim tại ranh giới, idempotency, double-click, reconcile/rollback, retry, reset/unmount, sort/filter và virtual list ở đầu/giữa/cuối. Browser script mở production preview, chụp desktop/mobile vào `evidence/`, chạy các kịch bản claim, kiểm tra scroll/filter/sort và ghi lỗi console vào `evidence/production-preview-browser.json`.
 
+Để chạy lại browser suite trên bản Pages đã deploy:
+
+```bash
+npm run verify:browser -- https://24521450.github.io/MSIS207.R11.CTTT.Week3.Hw3/
+```
+
+Lần kiểm tra deploy được lưu riêng trong `evidence/deployed-site-browser.json` cùng ảnh desktop/mobile.
+
 GitHub Actions chạy `npm ci`, typecheck, lint, test, build rồi deploy artifact `dist/` lên GitHub Pages khi push `main`.
 
 ## Giới hạn demo và liên kết
@@ -67,6 +75,6 @@ GitHub Actions chạy `npm ci`, typecheck, lint, test, build rồi deploy artifa
 - Mỗi tab có kho local độc lập; nhiều người dùng/trình duyệt không chia sẻ tồn kho.
 - Điểm leaderboard, feed trực tiếp, latency, lỗi tạm thời và 409 đều được mô phỏng cục bộ.
 - Không có giao dịch thật, tài khoản, xác thực, backend, thanh toán hoặc API của KRAFTON/PUBG.
-- Link GitHub Pages: <https://24521450.github.io/MSIS207.R11.CTTT.Week3.Hw3/> (chỉ xem là đã hoạt động sau khi workflow Pages hoàn tất và URL được kiểm tra).
+- Link GitHub Pages đã deploy và kiểm tra production: <https://24521450.github.io/MSIS207.R11.CTTT.Week3.Hw3/>.
 
 Nhật ký audit lỗi AI trong quá trình làm/review nằm tại [`AI_FAILURE_AUDIT.md`](./AI_FAILURE_AUDIT.md).

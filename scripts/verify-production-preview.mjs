@@ -147,7 +147,7 @@ try {
     screenshots: [`${evidencePrefix}-desktop.png`, `${evidencePrefix}-mobile.png`, `${evidencePrefix}-verified.png`],
   };
   await writeFile(join(evidenceDir, `${evidencePrefix}-browser.json`), `${JSON.stringify(report, null, 2)}\n`, "utf8");
-  console.log(`Browser verification passed: ${checks.length} checks. Evidence: evidence/production-preview-browser.json`);
+  console.log(`Browser verification passed: ${checks.length} checks. Evidence: evidence/${evidencePrefix}-browser.json`);
 } catch (error) {
   console.error("Browser verification failed:", error);
   process.exitCode = 1;
