@@ -1,5 +1,5 @@
 {
-  "testedAt": "2026-11-02T04:17:16.373Z",
+  "testedAt": "2026-11-02T15:12:46.389Z",
   "url": "https://24521450.github.io/MSIS207.R11.CTTT.Week3.Hw3/",
   "productionBuild": true,
   "browser": "Playwright Chromium",
@@ -17,39 +17,187 @@
       "passed": true
     },
     {
+      "check": "PVS VIP ticket is visible",
+      "passed": true
+    },
+    {
+      "check": "PVS reward quantity is explicitly labeled as simulated",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP countdown/phase is live with stock",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP displays a live close countdown",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP price is formatted in VND",
+      "passed": true
+    },
+    {
+      "check": "G-Coin crate is visible",
+      "passed": true
+    },
+    {
+      "check": "G-Coin simulated amount is displayed",
+      "passed": true
+    },
+    {
+      "check": "G-Coin countdown/phase is live with stock",
+      "passed": true
+    },
+    {
+      "check": "G-Coin crate displays a live close countdown",
+      "passed": true
+    },
+    {
+      "check": "G-Coin crate price is formatted in VND",
+      "passed": true
+    },
+    {
+      "check": "desktop axe audit reports zero violations",
+      "passed": true
+    },
+    {
+      "check": "mobile axe audit reports zero violations",
+      "passed": true
+    },
+    {
       "check": "mobile layout fits a 390 px viewport without horizontal overflow",
       "passed": true
     },
     {
-      "check": "success claim reconciles service stock",
+      "check": "PVS VIP optimistic claim deducts one unit",
       "passed": true
     },
     {
-      "check": "success leaves two of three mock units",
+      "check": "PVS VIP success reconciles service stock",
       "passed": true
     },
     {
-      "check": "409 scenario reconciles the service snapshot",
+      "check": "PVS VIP successful snapshot leaves two units",
       "passed": true
     },
     {
-      "check": "409 does not restore stock blindly",
+      "check": "G-Coin optimistic claim deducts one unit",
       "passed": true
     },
     {
-      "check": "temporary error rolls back optimistic stock",
+      "check": "G-Coin success reconciles service stock",
       "passed": true
     },
     {
-      "check": "temporary failure preserves mock stock for retry",
+      "check": "G-Coin successful snapshot leaves two units",
       "passed": true
     },
     {
-      "check": "retry succeeds with a fresh claim ID",
+      "check": "PVS VIP optimistic 409 attempt deducts one unit while pending",
       "passed": true
     },
     {
-      "check": "reset restores the new demo session",
+      "check": "PVS VIP 409 reconciles the service snapshot",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP 409 does not restore stock blindly",
+      "passed": true
+    },
+    {
+      "check": "G-Coin optimistic 409 attempt deducts one unit while pending",
+      "passed": true
+    },
+    {
+      "check": "G-Coin 409 reconciles the service snapshot",
+      "passed": true
+    },
+    {
+      "check": "G-Coin 409 does not restore stock blindly",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP temporary-error claim shows one optimistic unit deduction",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP button stays disabled while the claim is pending",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP pending message is visible",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP remains disabled after changing scenario while pending",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP pending message survives scenario change",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP request uses the scenario captured at start",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP temporary error rolls stock back",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP next request uses the newly selected success scenario",
+      "passed": true
+    },
+    {
+      "check": "PVS VIP retry reconciles success",
+      "passed": true
+    },
+    {
+      "check": "G-Coin temporary-error claim shows one optimistic unit deduction",
+      "passed": true
+    },
+    {
+      "check": "G-Coin button stays disabled while the claim is pending",
+      "passed": true
+    },
+    {
+      "check": "G-Coin pending message is visible",
+      "passed": true
+    },
+    {
+      "check": "G-Coin remains disabled after changing scenario while pending",
+      "passed": true
+    },
+    {
+      "check": "G-Coin pending message survives scenario change",
+      "passed": true
+    },
+    {
+      "check": "G-Coin request uses the scenario captured at start",
+      "passed": true
+    },
+    {
+      "check": "G-Coin temporary error rolls stock back",
+      "passed": true
+    },
+    {
+      "check": "G-Coin next request uses the newly selected success scenario",
+      "passed": true
+    },
+    {
+      "check": "G-Coin retry reconciles success",
+      "passed": true
+    },
+    {
+      "check": "reset-race setup has a pending claim",
+      "passed": true
+    },
+    {
+      "check": "reset while pending restores the new session stock",
+      "passed": true
+    },
+    {
+      "check": "old response does not overwrite the reset session",
       "passed": true
     },
     {
@@ -77,11 +225,58 @@
       "passed": true
     },
     {
-      "check": "no page or console errors during browser scenarios",
+      "check": "no JavaScript console errors during browser scenarios",
+      "passed": true
+    },
+    {
+      "check": "no failed requests or HTTP errors during browser scenarios",
       "passed": true
     }
   ],
   "consoleErrors": [],
+  "httpErrors": [],
+  "axe": {
+    "desktop": {
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodeCount": 2
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 208
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodeCount": 1
+        }
+      ]
+    },
+    "mobile": {
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodeCount": 1
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodeCount": 228
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "impact": "serious",
+          "nodeCount": 1
+        }
+      ]
+    }
+  },
   "screenshots": [
     "deployed-site-desktop.png",
     "deployed-site-mobile.png",
