@@ -1,4 +1,5 @@
 export type DropPhase = "WARMUP" | "AIRDROP_LIVE" | "LOOTED_OUT" | "EXPIRED";
+export type AirdropRewardKind = "SUPPLY_CRATE" | "PVS_VIP_TICKET" | "GCOIN_CRATE";
 
 export interface PubgCrateDrop {
   readonly id: string;
@@ -7,6 +8,9 @@ export interface PubgCrateDrop {
   readonly remainingStock: number;
   readonly dropEpochMs: number;
   readonly expiresAtEpochMs: number;
+  readonly rewardKind: AirdropRewardKind;
+  readonly rewardAmount: number;
+  readonly rewardUnit: string;
 }
 
 export interface PubgVnSquadStanding {

@@ -35,6 +35,14 @@ function phaseClass(phase: DropPhase): string {
   }[phase];
 }
 
+function rewardCategoryLabel(drop: PubgCrateDrop): string {
+  switch (drop.rewardKind) {
+    case "PVS_VIP_TICKET": return "PVS · GRAND FINALS";
+    case "GCOIN_CRATE": return "G-COIN · CRATE";
+    case "SUPPLY_CRATE": return "AIRDROP · TIẾP TẾ";
+  }
+}
+
 function useLiveKillFeed() {
   const [events, setEvents] = useState<readonly KillFeedEvent[]>(SEEDED_KILL_FEED);
   useEffect(() => {
@@ -66,25 +74,36 @@ function DropCard({ drop, stock, phase, claimState, onClaim }: {
   const targetEpochMs = phase === "WARMUP" ? drop.dropEpochMs : drop.expiresAtEpochMs;
   const { remainingMs } = usePubgAirdropTimer(targetEpochMs, SERVER_OFFSET_MS);
   const claimDisabled = phase !== "AIRDROP_LIVE" || claimState?.status === "pending";
+  const isTicket = drop.rewardKind === "PVS_VIP_TICKET";
   return (
     <article className={`drop-card ${phase === "AIRDROP_LIVE" ? "drop-card-active" : ""}`} data-testid={`drop-${drop.id}`}>
       <div className="drop-card-top">
         <span className={`phase-badge ${phaseClass(phase)}`}><span className="phase-dot" />{phaseText(phase)}</span>
         <span className="drop-stock"><i aria-hidden="true">▧</i> {stock} <span>còn lại</span></span>
       </div>
-      <div className="crate-illustration" aria-hidden="true">
-        <span className="crate-glow" />
-        <svg viewBox="0 0 150 128" className="crate-svg">
-          <path d="M28 42 75 19l47 23v50l-47 24-47-24z" fill="#d78b2d" stroke="#ffd27c" strokeWidth="2" />
-          <path d="m28 42 47 24 47-24M75 66v50M45 33l48 26v52M105 33 57 59" fill="none" stroke="#442d17" strokeWidth="5" />
-          <path d="m39 47 36 18 36-18v34L75 99 39 81z" fill="#f3b249" opacity=".76" />
-          <path d="M59 56 75 48l16 8-16 9z" fill="#fff0c6" opacity=".75" />
-          <path d="M62 86h26" stroke="#fff0c6" strokeWidth="4" strokeLinecap="round" />
-        </svg>
+      <div className={`reward-illustration ${isTicket ? "ticket-illustration" : "crate-illustration"}`} aria-hidden="true">
+        {!isTicket && <span className="crate-glow" />}
+        {isTicket ? (
+          <svg viewBox="0 0 150 128" className="ticket-svg">
+            <path d="M31 27h88v24a12 12 0 0 0 0 24v24H31V75a12 12 0 0 0 0-24z" fill="#d88d32" stroke="#ffd27c" strokeWidth="2" />
+            <path d="M48 42h53M48 55h35M48 83h54" stroke="#4d3217" strokeWidth="4" strokeLinecap="round" />
+            <path d="M101 39v48" stroke="#fff0c6" strokeWidth="2" strokeDasharray="3 5" />
+            <text x="111" y="66" fill="#fff0c6" fontSize="10" fontWeight="700" textAnchor="middle" transform="rotate(90 111 66)">VIP</text>
+          </svg>
+        ) : (
+          <svg viewBox="0 0 150 128" className="crate-svg">
+            <path d="M28 42 75 19l47 23v50l-47 24-47-24z" fill="#d78b2d" stroke="#ffd27c" strokeWidth="2" />
+            <path d="m28 42 47 24 47-24M75 66v50M45 33l48 26v52M105 33 57 59" fill="none" stroke="#442d17" strokeWidth="5" />
+            <path d="m39 47 36 18 36-18v34L75 99 39 81z" fill="#f3b249" opacity=".76" />
+            <path d="M59 56 75 48l16 8-16 9z" fill="#fff0c6" opacity=".75" />
+            <path d="M62 86h26" stroke="#fff0c6" strokeWidth="4" strokeLinecap="round" />
+          </svg>
+        )}
       </div>
       <div className="drop-copy">
-        <div className="drop-label">AIRDROP · #{drop.id === "drop-live" ? "02" : drop.id === "drop-looted" ? "03" : "01"}</div>
+        <div className="drop-label">{rewardCategoryLabel(drop)}</div>
         <h3>{drop.title}</h3>
+        <div className="drop-reward">{drop.rewardAmount.toLocaleString("vi-VN")} {drop.rewardUnit}</div>
         <div className="drop-price">{formatVnd(drop.priceVnd)}</div>
       </div>
       <div className="drop-countdown">
@@ -132,7 +151,7 @@ function App() {
       <div className="ambient ambient-one" aria-hidden="true" />
       <div className="ambient ambient-two" aria-hidden="true" />
       <header className="topbar">
-        <a className="brand-lockup" href="#top" aria-label="PUBG Vietnam Airdrop Arena, đầu trang">
+        <a className="brand-lockup" href="#top">
           <span className="brand-emblem" aria-hidden="true"><span>PGC</span></span>
           <span className="brand-wordmark"><strong>BATTLEGROUNDS</strong><span>VIETNAM · CHAMPIONSHIP</span></span>
         </a>

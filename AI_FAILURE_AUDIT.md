@@ -33,3 +33,19 @@ Ghi nhận các lỗi thật phát hiện trong quá trình triển khai/review 
 - **Nguyên nhân:** dùng con số trình bày optimistic cho quyết định phase thay vì snapshot kho đã xác nhận.
 - **Vị trí sửa:** `src/App.tsx` tính phase bằng `snapshots` chuẩn từ service; `displayedStock` chỉ dùng cho số lượng nhìn thấy.
 - **Regression evidence:** `src/App.test.tsx` giữ phase `AIRDROP_LIVE` trong lúc claim cuối đang chờ rồi chuyển sang `LOOTED_OUT` khi service xác nhận thành công; domain boundary được kiểm tra riêng trong `src/domain/airdrop.test.ts`.
+
+## 5. Đổi scenario xóa trạng thái claim đang chờ
+
+- **Hành vi sai:** khi đang chờ response 650 ms, đổi scenario làm nút claim bật lại và message pending biến mất. Ref lock còn giữ request, nên click mới bị bỏ qua trong khi UI nói người dùng có thể nhận.
+- **Cách phát hiện/tái hiện:** báo cáo kiểm tra HW3 ngày 02/11/2026 ghi nhận lỗi này; tái hiện bằng cách chọn lỗi tạm thời, claim vé PVS rồi đổi select trước khi hết latency.
+- **Nguyên nhân:** `setScenario()` gọi `setClaims({})`, xóa cả trạng thái `pending`; service đã chụp scenario khi bắt đầu request nhưng giao diện xóa trạng thái của request đó.
+- **Vị trí sửa:** `src/hooks/useAirdropSession.ts` chỉ xóa claims đã settle khi đổi scenario; claims `pending` giữ nguyên status, message và `claimId`.
+- **Regression evidence:** `src/hooks/useAirdropSession.test.tsx` xác nhận request đầu trả lỗi theo scenario ban đầu và request kế tiếp dùng scenario mới; `src/App.test.tsx` xác nhận nút còn disabled và message pending còn hiển thị. Browser regression lặp luồng này với cả PVS và G-Coin.
+
+## 6. Brand link có accessible name không khớp nội dung hiển thị
+
+- **Hành vi sai:** accessible name của brand link bỏ qua chữ `BATTLEGROUNDS · VIETNAM · CHAMPIONSHIP`, bị axe báo `label-content-name-mismatch` trên cả desktop và mobile.
+- **Cách phát hiện/tái hiện:** báo cáo kiểm tra HW3 ghi một violation cho `.brand-lockup` ở cả hai viewport.
+- **Nguyên nhân:** `aria-label` khác nội dung con và thay thế tên được tính từ chữ hiển thị.
+- **Vị trí sửa:** `src/App.tsx` bỏ `aria-label` dư để accessible name được lấy từ nội dung brand đang hiển thị.
+- **Regression evidence:** browser script chạy axe trên production preview và site deploy ở desktop/mobile, yêu cầu mỗi viewport không có violation.

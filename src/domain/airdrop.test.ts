@@ -9,6 +9,9 @@ const drop: PubgCrateDrop = {
   remainingStock: 1,
   dropEpochMs: 1_000,
   expiresAtEpochMs: 2_000,
+  rewardKind: "SUPPLY_CRATE",
+  rewardAmount: 1,
+  rewardUnit: "vật phẩm mô phỏng",
 };
 
 describe("airdrop domain", () => {

@@ -10,6 +10,9 @@ const drop: PubgCrateDrop = {
   remainingStock: 1,
   dropEpochMs: base,
   expiresAtEpochMs: base + 5_000,
+  rewardKind: "SUPPLY_CRATE",
+  rewardAmount: 1,
+  rewardUnit: "vật phẩm mô phỏng",
 };
 
 function makeClock(now = base): AirdropClock {
@@ -26,18 +29,24 @@ describe("MockAirdropService", () => {
 
   it("is idempotent for a claim ID and never lets stock go below zero", async () => {
     vi.useFakeTimers();
-    const service = new MockAirdropService([drop], { clock: makeClock(), latencyMs: 50 });
-    const first = service.claim("live", "claim-one");
-    const duplicate = service.claim("live", "claim-one");
-    await vi.advanceTimersByTimeAsync(50);
-    const [a, b] = await Promise.all([first, duplicate]);
-    expect(a).toEqual(b);
-    expect(a.kind).toBe("success");
-    expect(service.getSnapshot("live")).toEqual({ stock: 0, version: 1 });
-    const afterSoldOut = service.claim("live", "claim-two");
-    await vi.advanceTimersByTimeAsync(50);
-    expect((await afterSoldOut).kind).toBe("unavailable");
-    expect(service.getSnapshot("live").stock).toBe(0);
+    const rewards: readonly PubgCrateDrop[] = [
+      { ...drop, id: "vip", rewardKind: "PVS_VIP_TICKET", rewardAmount: 1, rewardUnit: "vé VIP mô phỏng" },
+      { ...drop, id: "gcoin", rewardKind: "GCOIN_CRATE", rewardAmount: 2_000, rewardUnit: "G-Coin mô phỏng" },
+    ];
+    const service = new MockAirdropService(rewards, { clock: makeClock(), latencyMs: 50 });
+    for (const dropId of ["vip", "gcoin"]) {
+      const first = service.claim(dropId, "claim-one");
+      const duplicate = service.claim(dropId, "claim-one");
+      await vi.advanceTimersByTimeAsync(50);
+      const [a, b] = await Promise.all([first, duplicate]);
+      expect(a).toEqual(b);
+      expect(a.kind).toBe("success");
+      expect(service.getSnapshot(dropId)).toEqual({ stock: 0, version: 1 });
+      const afterSoldOut = service.claim(dropId, "claim-two");
+      await vi.advanceTimersByTimeAsync(50);
+      expect((await afterSoldOut).kind).toBe("unavailable");
+      expect(service.getSnapshot(dropId).stock).toBe(0);
+    }
   });
 
   it("reconciles a deterministic 409 from the service snapshot when a rival empties stock", async () => {
@@ -61,6 +70,21 @@ describe("MockAirdropService", () => {
     const retry = service.claim("live", "retry-attempt");
     await vi.advanceTimersByTimeAsync(20);
     expect((await retry).kind).toBe("success");
+    expect(service.getSnapshot("live").stock).toBe(0);
+  });
+
+  it("uses the scenario captured when a request starts, even if the selector changes during latency", async () => {
+    vi.useFakeTimers();
+    const service = new MockAirdropService([drop], { clock: makeClock(), latencyMs: 20, scenario: "temporary-error" });
+    const pending = service.claim("live", "captured-scenario");
+    service.setScenario("success");
+    await vi.advanceTimersByTimeAsync(20);
+    expect((await pending).kind).toBe("temporary-error");
+    expect(service.getSnapshot("live").stock).toBe(1);
+
+    const next = service.claim("live", "next-scenario");
+    await vi.advanceTimersByTimeAsync(20);
+    expect((await next).kind).toBe("success");
     expect(service.getSnapshot("live").stock).toBe(0);
   });
 

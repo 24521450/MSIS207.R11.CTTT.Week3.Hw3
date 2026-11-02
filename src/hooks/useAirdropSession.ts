@@ -65,7 +65,9 @@ export function useAirdropSession(serverOffsetMs = 0) {
   const setScenario = useCallback((nextScenario: ClaimScenario) => {
     sessionRef.current.service.setScenario(nextScenario);
     setScenarioState(nextScenario);
-    setClaims({});
+    setClaims((previous) => Object.fromEntries(
+      Object.entries(previous).filter(([, claimState]) => claimState.status === "pending"),
+    ));
   }, []);
 
   const displayedStock = useMemo(() => {
